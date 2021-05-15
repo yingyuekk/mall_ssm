@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "fa673114-d041-4a49-9163-95add4514c8e",
+		"name": "ssm在线商城-----购物车管理",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "获取购物车列表",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Cookie",
+						"value": "token=92f55bb9-7ac6-4088-8d29-8ad426eefcb4",
+						"type": "text"
+					},
+					{
+						"key": "Cookie",
+						"value": "cart=\"{'id':536563,'title':'new2 - 阿尔卡特 (OT-927) 炭黑 联通3G手机 双卡双待','sellPoint':'清仓！仅北京，武汉仓有货！','price':29900000,'num':3,'barcode':'','image':'http://image.e3mall.cn/jd/4ef8861cf6854de9889f3db9b24dc371.jpg','cid':560,'status':1,'created':'2015-03-08 21:33:18','updated':'2015-04-11 20:38:38'}\"",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8088/cart/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"cart",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "添加商品到购物车",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8088/cart/add/536563?num=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"cart",
+						"add",
+						"536563"
+					],
+					"query": [
+						{
+							"key": "num",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,141 @@
+{
+	"info": {
+		"_postman_id": "bb1adb24-cc30-4340-b743-f4ac720469f8",
+		"name": "ssm在线商城-----内容管理",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "获取分类下内容列表",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8088/content/list/89?pageNum=1&pageSize=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"content",
+						"list",
+						"89"
+					],
+					"query": [
+						{
+							"key": "pageNum",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增内容",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"categoryId\":89,\r\n    \"title\": \"新增内容-------标题\",\r\n    \"subTitle\": \"新增内容-------子标题\",\r\n    \"titleDesc\": \"新增内容-------内容描述\",\r\n    \"url\": \"www.baidu.com\",\r\n    \"pic\": \"http://192.168.25.128/group1/M00/00/00/wKgZgGCWfxaAUDYNAADGNm-FzRk21.webp\",\r\n    \"pic2\": \"http://192.168.25.128/group1/M00/00/00/wKgZgGCWfxaAdNglAAE8rjC42H084.webp\",\r\n    \"content\": \"新增内容-------内容\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8088/content/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"content",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "删除内容",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8088/content/del/32",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"content",
+						"del",
+						"32"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "修改内容",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"categoryId\":89,\r\n    \"title\": \"修改内容-------标题\",\r\n    \"subTitle\": \"修改内容-------子标题\",\r\n    \"titleDesc\": \"修改内容-------内容描述\",\r\n    \"url\": \"www.baidu.com\",\r\n    \"pic\": \"http://192.168.25.128/group1/M00/00/00/wKgZgGCWfxaAUDYNAADGNm-FzRk21.webp\",\r\n    \"pic2\": \"http://192.168.25.128/group1/M00/00/00/wKgZgGCWfxaAdNglAAE8rjC42H084.webp\",\r\n    \"content\": \"修改内容-------内容\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8088/content/edit/31",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"content",
+						"edit",
+						"31"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取内容信息",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8088/content/info/31",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"content",
+						"info",
+						"31"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

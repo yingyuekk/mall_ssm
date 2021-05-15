@@ -1,0 +1,48 @@
+{
+	"info": {
+		"_postman_id": "4a171851-6aa7-45a7-8eb2-bb055e0d95c3",
+		"name": "前台首页内容显示--根据前端要求修改",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "获取轮播数据",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8088/home/carousel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"home",
+						"carousel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取商品详情页面",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9960/162082762230759.html",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9960",
+					"path": [
+						"162082762230759.html"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

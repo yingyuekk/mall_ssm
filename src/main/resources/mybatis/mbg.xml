@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 加载配置文件-->
+    <properties resource="db.properties"></properties>
+    <!-- http://mybatis.org/generator/configreference/xmlconfig.html -->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <!-- 生成的 Java 文件的编码 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 格式化 Java 代码 -->
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <!-- 格式化 XML 代码 -->
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+
+        <!-- 自定义注释生成器 -->
+        <commentGenerator type="cn.xq.ssm.mbg.MysqlCommentGenerator">
+            <property name="author" value="qiong.xie"/>
+            <property name="dateFormat" value="yyyy/MM/dd"/>
+        </commentGenerator>
+
+        <!-- 配置数据库连接 -->
+        <jdbcConnection
+                driverClass="${driver}"
+                connectionURL="jdbc:mysql://192.168.25.128:3306/tb_mall?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=UTC"
+                userId="${user}"
+                password="${password}">
+        </jdbcConnection>
+
+        <!-- 指定javaBean生成的位置 -->
+        <javaModelGenerator targetPackage="cn.xq.ssm.entity" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!--指定sql映射文件生成的位置 -->
+        <sqlMapGenerator targetPackage="cn.xq.ssm.mapper" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- 指定dao接口生成的位置，mapper接口 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.xq.ssm.mapper" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!-- table指定每个表的生成策略 -->
+        <table tableName="tb_content" domainObjectName="Content"></table>
+        <table tableName="tb_content_category" domainObjectName="ContentCategory"></table>
+        <table tableName="tb_item" domainObjectName="Item"></table>
+        <table tableName="tb_item_cat" domainObjectName="ItemCat"></table>
+        <table tableName="tb_item_desc" domainObjectName="ItemDesc"></table>
+        <table tableName="tb_item_param" domainObjectName="ItemParam"></table>
+        <table tableName="tb_item_param_item" domainObjectName="ItemParamItem"></table>
+        <table tableName="tb_order" domainObjectName="Order"></table>
+        <table tableName="tb_order_item" domainObjectName="OrderItem"></table>
+        <table tableName="tb_order_shipping" domainObjectName="OrderShipping"></table>
+        <table tableName="tb_user" domainObjectName="User"></table>
+    </context>
+</generatorConfiguration>

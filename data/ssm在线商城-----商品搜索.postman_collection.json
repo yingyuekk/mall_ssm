@@ -1,0 +1,34 @@
+{
+	"info": {
+		"_postman_id": "94d62d7a-42fe-4026-97e4-24b830fe50d0",
+		"name": "ssm在线商城-----商品搜索",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "根据关键词搜索商品",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8088/search?keyword=手机",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "keyword",
+							"value": "手机"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

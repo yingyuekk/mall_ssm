@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "4dbb78d6-a72a-4bc8-b57c-373ecf0a1c10",
+		"name": "ssm在线商城-----用户管理",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "用户登录",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8088/user/login?username=zhangsan&password=123456",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"user",
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "zhangsan"
+						},
+						{
+							"key": "password",
+							"value": "123456"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "用户注册",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"jack\",\r\n    \"password\" : \"123456\",\r\n    \"phone\" : \"1561111\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8088/user/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "校验用户表单数据",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8088/user/check/jack2/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"user",
+						"check",
+						"jack2",
+						"1"
+					]
+				},
+				"description": "http://localhost:8088/user/check/{param}/{type}\nparam:参数\ntype:1、用户名，2、手机号，3、邮箱"
+			},
+			"response": []
+		},
+		{
+			"name": "根据token获取用户信息",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8088/user/token/92f55bb9-7ac6-4088-8d29-8ad426eefcb4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8088",
+					"path": [
+						"user",
+						"token",
+						"92f55bb9-7ac6-4088-8d29-8ad426eefcb4"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

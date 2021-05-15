@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/jee
+        http://www.springframework.org/schema/jee/spring-jee.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--dao-->
+    <!-- 关联数据库文件 -->
+    <context:property-placeholder location="classpath*:*.properties" />
+
+    <!-- 数据库连接池 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="url" value="${url}" />
+        <property name="username" value="${user}" />
+        <property name="password" value="${password}" />
+        <property name="driverClassName" value="${driver}" />
+        <property name="maxActive" value="10" />
+        <property name="minIdle" value="5" />
+    </bean>
+
+    <!-- 配置SqlSessionFactory对象 -->
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!-- 配置MyBaties全局配置文件:mybatis-config.xml -->
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
+    </bean>
+
+    <!-- 配置扫描Dao接口包，动态实现Dao接口注入到spring容器中 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sessionFactory" />
+        <!-- 给出需要扫描Dao接口包 -->
+        <property name="basePackage" value="cn.xq.ssm.mapper" />
+    </bean>
+
+    <!--service-->
+    <!-- 扫描组件 -->
+    <context:component-scan base-package="cn.xq.ssm.service" />
+
+    <!-- ===============事务控制的配置 ================-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--控制住数据源  -->
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!-- 系统日志工具类 -->
+    <bean id="logUtils" class="cn.xq.ssm.common.SystemLogUtils"></bean>
+    <!--开启基于注解的事务，使用xml配置形式的事务（必要主要的都是使用配置式）  -->
+    <aop:config>
+        <!-- 切入点表达式 -->
+        <aop:pointcut expression="execution(* cn.xq.ssm.service..*(..))" id="txPoint"/>
+
+        <aop:aspect ref="logUtils">
+            <aop:after method="writeLog" pointcut-ref="txPoint" />
+        </aop:aspect>
+    </aop:config>
+
+    <!--配置事务增强，事务如何切入  -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!-- 所有方法都是事务方法 -->
+            <tx:method name="*"/>
+            <!--以get开始的所有方法  -->
+            <tx:method name="get*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--mvc-->
+    <context:component-scan base-package="cn.xq.ssm.config"/>
+    <!-- 扫描组件 -->
+    <context:component-scan base-package="cn.xq.ssm.controller" />
+
+    <!-- 视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- freemarker的配置 -->
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF/ftl/" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+
+    <!-- 配置资源映射 -->
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
+    <mvc:resources location="/css/" mapping="/css/**"/>
+    <mvc:resources location="/js/" mapping="/js/**"/>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="9200000" />
+        <property name="maxInMemorySize" value="100000" />
+    </bean>
+    <!-- 开启注解扫描 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- 配置拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="cn.xq.ssm.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <bean class="cn.xq.ssm.config.SwaggerConfig" />
+    <context:component-scan base-package="cn.xq.ssm.exception" />
+    <context:component-scan base-package="com.github.tobato.fastdfs"/>
+    <context:component-scan base-package="cn.xq.ssm.dao" />
+    <!-- 配置solr -->
+    <bean id="builder" class="org.apache.solr.client.solrj.impl.HttpSolrClient.Builder"/>
+    <bean id="solrClient" class="org.apache.solr.client.solrj.impl.HttpSolrClient">
+        <constructor-arg name="builder" value="builder" />
+        <property name="baseURL" value="http://192.168.25.128:8983/solr/collection1" />
+    </bean>
+
+    <!-- 配置ActiveMQ -->
+    <bean id="activeMQConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://192.168.25.128:61616" />
+    </bean>
+    <!-- Spring用于管理真正的ConnectionFactory的ConnectionFactory -->
+    <bean id="connectionFactory"
+          class="org.springframework.jms.connection.SingleConnectionFactory">
+        <!-- 目标ConnectionFactory对应真实的可以产生JMS Connection的ConnectionFactory -->
+        <property name="targetConnectionFactory" ref="activeMQConnectionFactory" />
+    </bean>
+    <bean id="activeMQTopic" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg name="name" value="item-change-topic" />
+    </bean>
+    <bean id="itemChangeListener" class="cn.xq.ssm.listener.ItemChangeListener" />
+    <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destination" ref="activeMQTopic" />
+        <property name="messageListener" ref="itemChangeListener" />
+    </bean>
+
+    <!-- 配置生产者 -->
+    <!-- Spring提供的JMS工具类，它可以进行消息发送、接收等 -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象 -->
+        <property name="connectionFactory" ref="connectionFactory" />
+    </bean>
+
+    <!-- 连接redis单机版 -->
+    <bean id="jedisClientPool" class="cn.xq.ssm.common.JedisClientPool">
+        <property name="jedisPool" ref="jedisPool"></property>
+    </bean>
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="host" value="192.168.25.128"/>
+        <constructor-arg name="port" value="6380"/>
+    </bean>
+</beans>
